@@ -1,0 +1,37 @@
+# lines beginning with a #$ are instructions to the grid engine
+# all other lines beginning with a # are comments
+ 
+# ================= GRID Configuration ====================
+# Set the name of the job, useful for tracking with qstat
+#$ -N BRAINNET_CNN
+ 
+# The output and error logs are placed in the specified directory
+# WARNING: if the directory does not exist the job will fail to run
+#$ -o $HOME/Data/PSYSCAN/WP5_data/FEP/full_cohort_results/SGE_out/
+#$ -e $HOME/Data/PSYSCAN/WP5_data/FEP/full_cohort_results/SGE_out/
+ 
+# Tell the job how much memory it will use. The more you specify the longer
+# the job will take to be dispatched to a server for processing. The amount
+# of available memory on a given server is limited, the more memory requested
+# the fewer jobs that can run simultaneously. The job will be killed if it
+# exceeds the requested amount.
+#$ -l h_vmem=20G
+ 
+# Which queue to use, global is the standard queue, use cuda for the cuda card
+#$ -q global
+ 
+# ================= SHELL Configuration ===================
+# First unload any modules loaded by ~/.cshrc, then load the defaults
+module purge
+module load nan sge
+module load anaconda/3.7
+#module load cuda/10.0
+#source /software/system/anaconda/3-20200131/etc/profile.d/conda.sh
+#source activate /home/k1511004/.conda/envs/ni_data_processing_py3_gpu/
+setenv PATH /home/k1511004/.conda/envs/ni_data_processing_py3/bin:$PATH
+
+ 
+# ================= SHELL Commands ========================
+ 
+# Run the program
+python /home/k1511004/Projects/PSYSCAN/Prelim_FEP_dataset/preliminary_FEP_outcomes/predict_treatment_response_brainnet_CNN.py
